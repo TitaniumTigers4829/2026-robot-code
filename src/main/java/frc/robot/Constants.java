@@ -102,4 +102,10 @@ public static final class FieldConstants {
         new Translation2d(FIELD_LENGTH_METERS / 2, FIELD_WIDTH_METERS / 2);
     //In addition to this, coordinates for all relevant game structures must be added (ex: blue outpost)
   }
+   public static final class JoystickConstants {
+    public static final int DRIVER_JOYSTICK_ID = 0;
+    public static final int OPERATOR_JOYSTICK_ID = 1;
+
+    public static final double DEADBAND_VALUE = 0.05;
+  }
 }
