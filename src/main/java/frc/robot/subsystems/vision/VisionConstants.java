@@ -13,7 +13,7 @@ public final class VisionConstants {
     FRONT_LEFT(
         FRONT_LEFT_LIMELIGHT_NUMBER, FRONT_LEFT_LIMELIGHT_NAME, LL4_FOV_MARGIN_OF_ERROR, true),
     FRONT_RIGHT(
-        FRONT_RIGHT_LIMELIGHT_NUMBER, FRONT_RIGHT_LIMELIGHT_NAME, LL3G_FOV_MARGIN_OF_ERROR, false);
+        FRONT_RIGHT_LIMELIGHT_NUMBER, FRONT_RIGHT_LIMELIGHT_NAME, LL42_FOV_MARGIN_OF_ERROR, true);
 
     private final int id;
     private final String name;
@@ -71,8 +71,11 @@ public final class VisionConstants {
   public static final double VISION_ANGLE_TRUST = Units.degreesToRadians(50); // radians
 
   public static final double LL3_FOV_MARGIN_OF_ERROR = 26;
-  public static final double LL3G_FOV_MARGIN_OF_ERROR = 36;
+  // public static final double LL3G_FOV_MARGIN_OF_ERROR = 36;
+
   public static final double LL4_FOV_MARGIN_OF_ERROR = 34.5;
+  public static final double LL42_FOV_MARGIN_OF_ERROR = 34.5;
+
 
   public static final double MAX_TRANSLATION_DELTA_METERS = 0.8;
   public static final double MAX_ROTATION_DELTA_DEGREES = 50.0;
