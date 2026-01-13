@@ -28,7 +28,6 @@ import frc.robot.extras.swerve.RepulsorFieldPlanner;
 import frc.robot.extras.swerve.setpointGen.SwerveSetpoint;
 import frc.robot.extras.swerve.setpointGen.SwerveSetpointGenerator;
 import frc.robot.extras.util.AllianceFlipper;
-import frc.robot.extras.util.ReefLocations;
 import frc.robot.extras.util.TimeUtil;
 import frc.robot.sim.configs.SimSwerveModuleConfig.WheelCof;
 import frc.robot.subsystems.swerve.SwerveConstants.DriveConstants;
@@ -696,118 +695,5 @@ public class SwerveDrive extends SubsystemBase {
     drive(outputRobotRelative.unaryMinus(), false);
   }
 
-  /**
-   * Checks if the robot is within a certain distance of the reef.
-   *
-   * @return a trigger that is true when the robot is within 1 meter of the reef.
-   */
-  public boolean isReefInRange() {
-    return (Math.abs(
-                getEstimatedPose()
-                    .getTranslation()
-                    .getDistance(
-                        ReefLocations.getSelectedLocation(getEstimatedPose().getTranslation(), true)
-                            .getTranslation()))
-            <= .0124829
-        || Math.abs(
-                getEstimatedPose()
-                    .getTranslation()
-                    .getDistance(
-                        ReefLocations.getSelectedLocation(
-                                getEstimatedPose().getTranslation(), false)
-                            .getTranslation()))
-            <= .0124829);
-  }
-
-  /**
-   * Aligns the robot to the reef.
-   *
-   * @param left whether to align to the left or right reef.
-   */
-  public void reefAlign(Supplier<Translation2d> nudgeSupplier) {
-    int bestBranchWall = 0;
-    boolean bestLeft = true;
-    double bestScore = Double.POSITIVE_INFINITY;
-
-    // There are 6 reef walls, and each wall has 2 branches (left/right)
-    for (int i = 0; i < 6; i++) {
-      for (boolean left : new boolean[] {true, false}) {
-        Pose2d branchPose = getBranchPose(i, left);
-        Translation2d branchLocation = branchPose.getTranslation();
-
-        // Calculate how far the robot is from the branch
-        Translation2d robotToBranchVector =
-            branchLocation.minus(poseEstimator.getEstimatedPosition().getTranslation());
-        double branchDistanceScore = robotToBranchVector.getNorm();
-
-        // Incorporate any driver input if provided
-        Translation2d driverControlVector = nudgeSupplier.get();
-        if (AllianceFlipper.isRed()) {
-          driverControlVector =
-              new Translation2d(-driverControlVector.getX(), -driverControlVector.getY());
-        }
-
-        double driverInputScore;
-        if (driverControlVector.getNorm() < 0.1) {
-          driverInputScore = 0;
-        } else {
-          double robotToBranchAngle = robotToBranchVector.getAngle().getDegrees();
-          double driverControlAngle = driverControlVector.getAngle().getDegrees();
-          driverInputScore = driverControlAngle - robotToBranchAngle;
-          // Multiply by a factor (here 2) to weight the driver input relative to distance
-          driverInputScore = Math.cos(driverInputScore) * 2;
-        }
-
-        double branchScore = branchDistanceScore - driverInputScore;
-
-        Logger.recordOutput(
-            "Swerve/Reef Align/Wall " + i + " " + (left ? "Left" : "Right") + "/Score",
-            branchScore);
-
-        if (branchScore < bestScore) {
-          bestScore = branchScore;
-          bestBranchWall = i;
-          bestLeft = left;
-        }
-      }
-    }
-    followRepulsorField(getBranchPose(bestBranchWall, bestLeft), nudgeSupplier);
-  }
-
-  /**
-   * Aligns the robot to the reef.
-   *
-   * @param left whether to align to the left or right reef.
-   */
-  public void reefAlign(boolean left) {
-    int bestBranchWall = 0;
-    double bestScore = Double.POSITIVE_INFINITY;
-
-    // There are 6 reef walls, and each wall has 2 branches (left/right)
-    for (int i = 0; i < 6; i++) {
-      Pose2d branchPose = getBranchPose(i, left);
-      Translation2d branchLocation = branchPose.getTranslation();
-
-      // Calculate how far the robot is from the branch
-      Translation2d robotToBranchVector =
-          branchLocation.minus(poseEstimator.getEstimatedPosition().getTranslation());
-      double branchDistanceScore = robotToBranchVector.getNorm();
-
-      double branchScore = branchDistanceScore;
-
-      Logger.recordOutput(
-          "Swerve/Reef Align/Wall " + i + " " + (left ? "Left" : "Right") + "/Score", branchScore);
-
-      if (branchScore < bestScore) {
-        bestScore = branchScore;
-        bestBranchWall = i;
-      }
-    }
-    followRepulsorField(getBranchPose(bestBranchWall, left));
-  }
-
-  private Pose2d getBranchPose(int reefWall, boolean left) {
-    var branches = AllianceFlipper.isRed() ? ReefLocations.RED_POSES : ReefLocations.BLUE_POSES;
-    return branches[reefWall * 2 + (left ? 0 : 1)];
-  }
+ 
 }
