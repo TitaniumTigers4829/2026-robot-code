@@ -70,7 +70,6 @@ public class DriveCommand extends DriveCommandBase {
         isFieldRelative.getAsBoolean());
     // Runs all the code from DriveCommand that estimates pose
     super.execute();
-    isAligned.accept(driveSubsystem.isReefInRange());
   }
 
   @Override
