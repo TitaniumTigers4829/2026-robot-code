@@ -1,4 +1,4 @@
-package frc.robot.commands.drive;
+package frc.robot.commands.drive.drive;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.extras.math.interpolation.MultiLinearInterpolator;
