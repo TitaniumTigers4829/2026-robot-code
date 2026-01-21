@@ -22,7 +22,7 @@ import frc.robot.subsystems.shooter.ShooterInterface;
 /** Add your docs here. */
 public class PhysicalShooter implements ShooterInterface {
     
-  private final TalonFX topFlywheelMotor = new TalonFX(ShooterConstants.FLYWHEEL_MOTOR_ID);
+  private final TalonFX flywheelMotor = new TalonFX(ShooterConstants.FLYWHEEL_MOTOR_ID);
   
 
   private final MotionMagicVoltage mmPositionRequest = new MotionMagicVoltage(0.0);
@@ -33,4 +33,6 @@ public class PhysicalShooter implements ShooterInterface {
  
 
   private final TalonFXConfiguration flywheelConfig = new TalonFXConfiguration();
+
+  flywheelMotor.getConfigurator().apply(flywheelConfig);
 }

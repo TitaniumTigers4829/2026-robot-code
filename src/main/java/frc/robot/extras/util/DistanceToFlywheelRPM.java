@@ -5,9 +5,9 @@
 package frc.robot.extras.util;
 
 /** Add your docs here. */
-public class DistanceToFlywheelRPM {
-    //Okay here's the plan: lookup table if above 45 degs then bottom spins faster on a ratio i'll figure out
-    //later if less than 45 degrees then top spins faster on the same ratio
-    //then figure out velocity needed with that physics equation i did on another paper
-    //velocity i believe is the average velocity of the top and bottom flywheel
+//Since we are hopefully not changing our shooter type, we are testing which rpms of the bottom and sole
+//flywheel work from which distances and making a table which we can then turn into a regression line to use
+// whenever we need to shoot
+public class DistanceToFlywheelRPMLookupTable {
+    
 }
