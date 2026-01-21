@@ -22,55 +22,29 @@ public class ShooterSubsystem extends SubsystemBase {
   private ShooterInterface shooterInterface;
   private ShooterInputsAutoLogged inputs = new ShooterInputsAutoLogged();
  
-  private static final LoggedTunableNumber topS =
+  private static final LoggedTunableNumber flywheelS =
       new LoggedTunableNumber("Shooter/ShooterS");
-  private static final LoggedTunableNumber topV =
+  private static final LoggedTunableNumber flywheelV =
       new LoggedTunableNumber("Shooter/ShooterV");
-  private static final LoggedTunableNumber topA =
+  private static final LoggedTunableNumber flywheelA =
       new LoggedTunableNumber("Shooter/ShooterA");
-  private static final LoggedTunableNumber topG =
-      new LoggedTunableNumber("Shooter/ShooterG");
-  private static final LoggedTunableNumber topP =
+  private static final LoggedTunableNumber flywheelP =
       new LoggedTunableNumber("Shooter/ShooterP");
-  private static final LoggedTunableNumber topI =
+  private static final LoggedTunableNumber flywheelI =
       new LoggedTunableNumber("Shooter/ShooterI");
-  private static final LoggedTunableNumber topD =
+  private static final LoggedTunableNumber flywheelD =
       new LoggedTunableNumber("Shooter/ShooterD");
 
-  private static final LoggedTunableNumber bottomS =
-      new LoggedTunableNumber("Shooter/ShooterS");
-  private static final LoggedTunableNumber bottomV =
-      new LoggedTunableNumber("Shooter/ShooterV");
-  private static final LoggedTunableNumber bottomA =
-      new LoggedTunableNumber("Shooter/ShooterA");
-  private static final LoggedTunableNumber bottomG =
-      new LoggedTunableNumber("Shooter/ShooterG");
-  private static final LoggedTunableNumber bottomP =
-      new LoggedTunableNumber("Shooter/ShooterP");
-  private static final LoggedTunableNumber bottomI =
-      new LoggedTunableNumber("Shooter/ShooterI");
-  private static final LoggedTunableNumber bottomD =
-      new LoggedTunableNumber("Shooter/ShooterD");
 
   static {
     switch (Constants.getRobot()) {
       case COMP_ROBOT, DEV_ROBOT -> {
-        topS.initDefault(ShooterConstants.TOP_SHOOTER_S);
-        topV.initDefault(ShooterConstants.TOP_SHOOTER_V);
-        topA.initDefault(ShooterConstants.TOP_SHOOTER_A);
-        topG.initDefault(ShooterConstants.TOP_SHOOTER_G);
-        topP.initDefault(ShooterConstants.TOP_SHOOTER_P);
-        topI.initDefault(ShooterConstants.TOP_SHOOTER_I);
-        topD.initDefault(ShooterConstants.TOP_SHOOTER_D);
-
-        bottomS.initDefault(ShooterConstants.BOTTOM_SHOOTER_S);
-        bottomV.initDefault(ShooterConstants.BOTTOM_SHOOTER_V);
-        bottomA.initDefault(ShooterConstants.BOTTOM_SHOOTER_A);
-        bottomG.initDefault(ShooterConstants.BOTTOM_SHOOTER_G);
-        bottomP.initDefault(ShooterConstants.BOTTOM_SHOOTER_P);
-        bottomI.initDefault(ShooterConstants.BOTTOM_SHOOTER_I);
-        bottomD.initDefault(ShooterConstants.BOTTOM_SHOOTER_D);
-      }
+        flywheelS.initDefault(ShooterConstants.FLYWHEEL_S);
+        flywheelV.initDefault(ShooterConstants.FLYWHEEL_V);
+        flywheelA.initDefault(ShooterConstants.FLYWHEEL_A);
+        flywheelP.initDefault(ShooterConstants.FLYWHEEL_P);
+        flywheelI.initDefault(ShooterConstants.FLYWHEEL_I);
+        flywheelD.initDefault(ShooterConstants.FLYWHEEL_D);
     }
   }
 
@@ -79,54 +53,38 @@ public class ShooterSubsystem extends SubsystemBase {
     this.shooterInterface = shooterInterface;
   }
 
-  public double getTopFlywheelRPM() {
-    return shooterInterface.getTopFlywheelRPM();
+  public double getFlywheelRPM() {
+    return shooterInterface.getFlywheelRPM();
   }
 
-   public double getBottomFlywheelRPM() {
-    return shooterInterface.getBottomFlywheelRPM();
+
+  public double getVolts() {
+    return shooterInterface.getVolts();
   }
 
-  public double getTopVolts() {
-    return shooterInterface.getTopVolts();
+  public void setFlywheelRPM(double targetRPM) {
+    shooterInterface.setFlywheelRPM(targetRPM);
   }
 
-  public double getBottomVolts() {
-    return shooterInterface.getBottomVolts();
+  public double getFlywheelVelocity() {
+    return inputs.flywheelVelocity;
   }
 
-  public void setFlywheelRPM(double topRPM, double bottomRPM) {
-    shooterInterface.setFlywheelRPM(topRPM, bottomRPM);
+  public void setVolts(double volts) {
+    shooterInterface.setVolts(volts);
   }
 
-  public double getTopVelocity() {
-    return inputs.topMotorVelocity;
+  public void openLoop(double output) {
+    shooterInterface.openLoop(output);
   }
 
-  public double getBottomVelocity() {
-    return inputs.bottomMotorVelocity;
+  public void setPercentOutput(double output) {
+    shooterInterface.setPercentOutput(output);
   }
 
-  public void setVolts(double topVolts, double bottomVolts) {
-    shooterInterface.setVolts(topVolts, bottomVolts);
-  }
-
-  public void openLoop(double topOutput, double bottomOutput) {
-    shooterInterface.openLoop(topOutput, bottomOutput);
-  }
-
-  public void setPercentOutput(double topOutput, double bottomOutput) {
-    shooterInterface.setPercentOutput(topOutput, bottomOutput);
-  }
-
-  public boolean isTopAtSetpointRPM(double topRPM) {
-    return Math.abs(topRPM - inputs.topFlywheelRPM)
-        < ShooterConstants.TOP_FLYWHEEL_ERROR_TOLERANCE;
-  }
-
-  public boolean isBottomAtSetpointRPM(double bottomRPM) {
-    return Math.abs(bottomRPM - inputs.bottomFlywheelRPM)
-        < ShooterConstants.BOTTOM_FLYWHEEL_ERROR_TOLERANCE;
+  public boolean isTopAtSetpointRPM(double targetRPM) {
+    return Math.abs(targetRPM - inputs.topFlywheelRPM)
+        < ShooterConstants.FLYWHEEL_ERROR_TOLERANCE;
   }
 
 
@@ -136,42 +94,14 @@ public class ShooterSubsystem extends SubsystemBase {
     Logger.processInputs("Shooter/", inputs);
 
     // Update tunable numbers
-    if (topS.hasChanged(hashCode())
-        || topV.hasChanged(hashCode())
-        || topA.hasChanged(hashCode())
-        || topG.hasChanged(hashCode())) {
-      shooterInterface.setTopFF(topS.get(), topV.get(), topA.get(), topG.get());
+    if (flywheelS.hasChanged(hashCode())
+        || flywheelV.hasChanged(hashCode())
+        || flywheelA.hasChanged(hashCode())
+      shooterInterface.setFF(flywheelS.get(), flywheelV.get(), flywheelA.get()));
     }
-    if (topP.hasChanged(hashCode())
-        || topI.hasChanged(hashCode())
-        || topD.hasChanged(hashCode())) {
-      shooterInterface.setTopPID(topP.get(), topI.get(), topD.get());
-    }
-
-    if (bottomS.hasChanged(hashCode())
-        || bottomV.hasChanged(hashCode())
-        || bottomA.hasChanged(hashCode())
-        || bottomG.hasChanged(hashCode())) {
-      shooterInterface.setBottomFF(bottomS.get(), bottomV.get(), bottomA.get(), bottomG.get());
-    }
-    if (bottomP.hasChanged(hashCode())
-        || bottomI.hasChanged(hashCode())
-        || bottomD.hasChanged(hashCode())) {
-      shooterInterface.setBottomPID(bottomP.get(), bottomI.get(), bottomD.get());
+    if (flywheelP.hasChanged(hashCode())
+        || flywheelI.hasChanged(hashCode())
+        || flywheelD.hasChanged(hashCode())) {
+      shooterInterface.setPID(flywheelP.get(), flywheelI.get(), flywheelD.get());
     }
   }
-
-
-  // public Command setFlywheelRPM(double topRPM, double bottomRPM) {
-  //   return new FunctionalCommand(
-  //       // initialization function
-  //       () -> ,
-  //       // execution function
-  //       () -> this.setShooterPosition(position),
-  //       // end function
-  //       interrupted -> this.setShooterPosition(position),
-  //       // isFinished function
-  //       () -> isAtSetpoint(position),
-  //       this);
-  // }
-}

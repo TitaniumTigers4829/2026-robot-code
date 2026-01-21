@@ -5,7 +5,7 @@
 package frc.robot.extras.util;
 
 /** Add your docs here. */
-public class TopToBottomFlywheelRPMRatio {
+public class DistanceToFlywheelRPM {
     //Okay here's the plan: lookup table if above 45 degs then bottom spins faster on a ratio i'll figure out
     //later if less than 45 degrees then top spins faster on the same ratio
     //then figure out velocity needed with that physics equation i did on another paper

@@ -571,7 +571,7 @@ public class SwerveDrive extends SubsystemBase {
 
   //For hublocking
 
-  public double getDistanceFromRespectiveHub() {
+  public double getDistanceFromAllianceHub() {
     if (AllianceFlipper.isBlue()) {
       return FieldConstants.BLUE_HUB_CENTER.getDistance(poseEstimator.getEstimatedPosition().getTranslation());
     }
@@ -582,7 +582,7 @@ public class SwerveDrive extends SubsystemBase {
 
   public double getShootingAngle() {
     return Math.atan(
-      (FieldConstants.HUB_HEIGHT_METERS-ShooterConstants.SHOOTER_HEIGHT_FROM_GROUND) / getDistanceFromRespectiveHub());
+      (FieldConstants.HUB_HEIGHT_METERS-ShooterConstants.SHOOTER_HEIGHT_FROM_GROUND) / getDistanceFromAllianceHub());
   }
 
   /**
