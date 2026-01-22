@@ -30,6 +30,7 @@ import frc.robot.extras.swerve.setpointGen.SwerveSetpointGenerator;
 import frc.robot.extras.util.AllianceFlipper;
 import frc.robot.extras.util.TimeUtil;
 import frc.robot.sim.configs.SimSwerveModuleConfig.WheelCof;
+import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.subsystems.swerve.SwerveConstants.DriveConstants;
 import frc.robot.subsystems.swerve.SwerveConstants.ModuleConstants;
 import frc.robot.subsystems.swerve.gyro.GyroInputsAutoLogged;
@@ -565,6 +566,24 @@ public class SwerveDrive extends SubsystemBase {
    */
   public void resetEstimatedPose(Pose2d pose) {
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
+  }
+
+  // For hublocking
+
+  public double getDistanceFromAllianceHub() {
+    if (AllianceFlipper.isBlue()) {
+      return FieldConstants.BLUE_HUB_CENTER.getDistance(
+          poseEstimator.getEstimatedPosition().getTranslation());
+    } else {
+      return FieldConstants.RED_HUB_CENTER.getDistance(
+          poseEstimator.getEstimatedPosition().getTranslation());
+    }
+  }
+
+  public double getShootingAngle() {
+    return Math.atan(
+        (FieldConstants.HUB_HEIGHT_METERS - ShooterConstants.SHOOTER_HEIGHT_FROM_GROUND)
+            / getDistanceFromAllianceHub());
   }
 
   /**
