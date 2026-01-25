@@ -19,9 +19,9 @@ import frc.robot.subsystems.swerve.gyro.PhysicalGyroNavX;
 import frc.robot.subsystems.swerve.gyro.PhysicalGyroPigeon;
 import frc.robot.subsystems.swerve.module.ModuleInterface;
 import frc.robot.subsystems.swerve.module.PhysicalModule;
-import frc.robot.subsystems.vision.PhysicalVision;
-import frc.robot.subsystems.vision.VisionInterface;
-import frc.robot.subsystems.vision.VisionSubsystem;
+// import frc.robot.subsystems.vision.PhysicalVision;
+// import frc.robot.subsystems.vision.VisionInterface;
+// import frc.robot.subsystems.vision.VisionSubsystem;
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -41,7 +41,7 @@ public class Robot extends LoggedRobot {
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
-  private VisionSubsystem visionSubsystem;
+  // private VisionSubsystem visionSubsystem;
   private SwerveDrive swerveDrive;
 
   private Command autoCommand;
@@ -136,7 +136,6 @@ public class Robot extends LoggedRobot {
     Command driveCommand =
         new DriveCommand(
             swerveDrive,
-            visionSubsystem,
             // Translation in the X direction
             driverLeftStick[0],
             // Translation in the Y direction
@@ -166,11 +165,11 @@ public class Robot extends LoggedRobot {
 
     // Reset robot odometry based on the most recent vision pose measurement from april tags
     // This should be pressed when looking at an april tag
-    driverController
-        .povLeft()
-        .onTrue(
-            new InstantCommand(
-                () -> swerveDrive.resetEstimatedPose(visionSubsystem.getLastSeenPose())));
+    //   driverController
+    //       .povLeft()
+    //       .onTrue(
+    //           new InstantCommand(
+    //               () -> swerveDrive.resetEstimatedPose(visionSubsystem.getLastSeenPose())));
   }
 
   /** Configures the operator controller buttons and axes to control the robot */
@@ -247,7 +246,7 @@ public class Robot extends LoggedRobot {
                 new PhysicalModule(SwerveConstants.compModuleConfigs[1]),
                 new PhysicalModule(SwerveConstants.compModuleConfigs[2]),
                 new PhysicalModule(SwerveConstants.compModuleConfigs[3]));
-        this.visionSubsystem = new VisionSubsystem(new PhysicalVision());
+        // this.visionSubsystem = new VisionSubsystem(new PhysicalVision());
       }
       case DEV_ROBOT -> {
         /* Real robot, instantiate hardware IO implementations */
@@ -258,7 +257,7 @@ public class Robot extends LoggedRobot {
                 new PhysicalModule(SwerveConstants.devModuleConfigs[1]),
                 new PhysicalModule(SwerveConstants.devModuleConfigs[2]),
                 new PhysicalModule(SwerveConstants.devModuleConfigs[3]));
-        this.visionSubsystem = new VisionSubsystem(new PhysicalVision());
+        // this.visionSubsystem = new VisionSubsystem(new PhysicalVision());
         // this.elevatorSubsystem = new ElevatorSubsystem(new PhysicalElevator());
         // THIS IS THE SYNTAX FOR WHATEVER SUBSYSTEMS ARE USED ^^
       }
@@ -271,7 +270,7 @@ public class Robot extends LoggedRobot {
                 new PhysicalModule(SwerveConstants.aquilaModuleConfigs[1]),
                 new PhysicalModule(SwerveConstants.aquilaModuleConfigs[2]),
                 new PhysicalModule(SwerveConstants.aquilaModuleConfigs[3]));
-        this.visionSubsystem = new VisionSubsystem(new PhysicalVision());
+        // this.visionSubsystem = new VisionSubsystem(new PhysicalVision());
       }
 
       case SIM_ROBOT -> {
@@ -293,7 +292,7 @@ public class Robot extends LoggedRobot {
       }
 
       default -> {
-        this.visionSubsystem = new VisionSubsystem(new VisionInterface() {});
+        // this.visionSubsystem = new VisionSubsystem(new VisionInterface() {});
         /* Replayed robot, disable IO implementations */
 
         /* physics simulations are also not needed */

@@ -2,7 +2,6 @@ package frc.robot.commands.drive;
 
 import frc.robot.subsystems.swerve.SwerveConstants.DriveConstants;
 import frc.robot.subsystems.swerve.SwerveDrive;
-import frc.robot.subsystems.vision.VisionSubsystem;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
@@ -29,17 +28,16 @@ public class DriveCommand extends DriveCommandBase {
    */
   public DriveCommand(
       SwerveDrive driveSubsystem,
-      VisionSubsystem visionSubsystem,
       DoubleSupplier leftJoystickX,
       DoubleSupplier leftJoystickY,
       DoubleSupplier rightJoystickX,
       BooleanSupplier isFieldRelative,
       BooleanSupplier isHighRotation,
       Consumer<Boolean> isAligned) {
-    super(driveSubsystem, visionSubsystem);
+    super(driveSubsystem);
     this.driveSubsystem = driveSubsystem;
     this.isAligned = isAligned;
-    addRequirements(driveSubsystem, visionSubsystem);
+    addRequirements(driveSubsystem);
 
     this.leftJoystickY = leftJoystickY;
     this.leftJoystickX = leftJoystickX;
