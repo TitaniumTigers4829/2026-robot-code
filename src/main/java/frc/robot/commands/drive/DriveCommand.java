@@ -19,7 +19,6 @@ public class DriveCommand extends DriveCommandBase {
    * The command for driving the robot using joystick inputs.
    *
    * @param driveSubsystem The subsystem for the swerve drive
-   * @param visionSubsystem The subsystem for vision measurements
    * @param leftJoystickY The joystick input for driving forward and backwards
    * @param leftJoystickX The joystick input for driving left and right
    * @param rightJoystickX The joystick input for turning

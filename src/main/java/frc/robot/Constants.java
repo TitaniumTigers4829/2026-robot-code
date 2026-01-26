@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.subsystems.swerve.SwerveConstants.DriveConstants;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -119,6 +123,56 @@ public final class Constants {
     // TODO: In addition to this, coordinates for all relevant game structures must be added (ex:
     // blue outpost)
 
+  }
+
+  public static final class TrajectoryConstants {
+    public static final double MAX_SPEED = 5.0;
+    public static final double MAX_ACCELERATION = 3;
+
+    public static final double AUTO_TRANSLATION_P = 1.5; // 1.7
+    public static final double AUTO_TRANSLATION_D = 0.2;
+    public static final double AUTO_THETA_P = 4.5; // 5
+    public static final double AUTO_THETA_D = 0.4;
+
+    public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = 2;
+    public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = 2;
+
+    // Constraint for the motion profiled robot angle controller
+    public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS =
+        new TrapezoidProfile.Constraints(
+            MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
+
+    public static final PathConstraints PATH_CONSTRAINTS =
+        new PathConstraints(
+            MAX_SPEED,
+            MAX_ACCELERATION,
+            MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
+            MAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
+
+    public static final double X_TOLERANCE = 0.02;
+    public static final double Y_TOLERANCE = 0.02;
+    public static final double THETA_TOLERANCE = 1.25;
+
+    // Note Detection Driving Constants
+    public static final double AUTO_ALIGN_TRANSLATIONAL_P = 3;
+    public static final double AUTO_ALIGN_TRANSLATIONAL_I = 0;
+    public static final double AUTO_ALIGN_TRANSLATIONAL_D = 0;
+
+    public static Constraints AUTO_ALIGN_TRANSLATION_CONSTRAINTS = new Constraints(5, 2);
+
+    public static final double AUTO_ALIGN_ROTATIONAL_P = 3;
+    public static final double AUTO_ALIGN_ROTATIONAL_I = 0;
+    public static final double AUTO_ALIGN_ROTATIONAL_D = 0;
+
+    public static Constraints AUTO_ALIGN_ROTATIONAL_CONSTRAINTS =
+        new Constraints(DriveConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND, 2);
+  }
+
+  public static final class AutoConstants {
+    // Different Pre-defined Auto Routines
+    public static final String Y_ONE_METER_AUTO = "Y-One-Meter-Test";
+
+    public static final String Y_ONE_METER_TRAJECTORY = "MiscTrajectories/one_point_one_meter";
   }
 
   public static final class JoystickConstants {

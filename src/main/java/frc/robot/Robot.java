@@ -44,13 +44,14 @@ public class Robot extends LoggedRobot {
   // private VisionSubsystem visionSubsystem;
   private SwerveDrive swerveDrive;
 
+  private Autos autos;
   private Command autoCommand;
 
   public Robot() {
     checkGit();
     setupLogging();
     setupSubsystems();
-    // setupAuto();
+    setupAuto();
   }
 
   /** This function is called periodically during all modes. */
@@ -66,6 +67,9 @@ public class Robot extends LoggedRobot {
     // the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
+    // Updates autos while the robot is enabled
+    autos.update();
+
     // Return to normal thread priority without real time
     Threads.setCurrentThreadPriority(false, HardwareConstants.LOW_THREAD_PRIORITY);
   }
@@ -75,27 +79,27 @@ public class Robot extends LoggedRobot {
   public void disabledInit() {}
 
   /** This function is called periodically when disabled. */
-  // @Override
-  // public void disabledPeriodic() {
-  //   autos.update();
-  // }
+  @Override
+  public void disabledPeriodic() {
+    autos.update();
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-  // @Override
-  // public void autonomousInit() {
-  //   autoCommand = autos.getSelectedCommand();
-  //   autoCommand.schedule();
-  // }
+  @Override
+  public void autonomousInit() {
+    autoCommand = autos.getSelectedCommand();
+    autoCommand.schedule();
+  }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {}
 
-  // @Override
-  // public void autonomousExit() {
-  //   autoCommand.cancel();
-  //   autos.clear();
-  // }
+  @Override
+  public void autonomousExit() {
+    autoCommand.cancel();
+    autos.clear();
+  }
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -310,15 +314,9 @@ public class Robot extends LoggedRobot {
   }
 
   /** Sets up the auto commands */
-  // private void setupAuto() {
-  //   this.autos =
-  //       new Autos(
-  //           this.elevatorSubsystem,
-  //           this.coralIntakeSubsystem,
-  //           this.swerveDrive,
-  //           this.visionSubsystem,
-  //           this.funnelSubsystem);
-  // }
+  private void setupAuto() {
+    this.autos = new Autos(this.swerveDrive);
+  }
 
   /** This function is called periodically during operator control. */
   @Override
