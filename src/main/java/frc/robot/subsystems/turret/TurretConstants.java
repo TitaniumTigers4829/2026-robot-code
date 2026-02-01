@@ -16,8 +16,8 @@ public class TurretConstants {
   public static final int TURRET_CANCODER_ID = 0-9;
   public static final double GEAR_RATIO = 0;
 
-  public static final double X_DISTANCE = Units.inchesToMeters(-7.75);
-  public static final double Y_DISTANCE = Units.inchesToMeters(4.68);
+  public static final double X_OFFSET = Units.inchesToMeters(-7.75);
+  public static final double Y_OFFSET = Units.inchesToMeters(4.68);
   public static final double Y_DISTANCE_FROM_FRONT = Units.inchesToMeters(7.25);
 
   public static double MAX_VELOCITY_ROTATIONS_PER_SECOND = 10;
@@ -27,8 +27,10 @@ public class TurretConstants {
   public static double TURRET_P = 0;
   public static double TURRET_I = 0;
   public static double TURRET_D = 0;
-  public static Constraints TURRET_CONSTRAINTS =
-    new Constraints(MAX_VELOCITY_ROTATIONS_PER_SECOND, MAX_ACCELERATION_ROTATIONS_PER_SECOND_SQUARED);
+  public static double TURRET_S = 0;
+  public static double TURRET_V = 0;
+  public static double TURRET_A = 0;
+
 
   
 

@@ -39,4 +39,6 @@ public interface TurretInterface {
   public default void openLoop(double output) {}
 
   public default void setPID(double kP, double kI, double kD) {}
+
+  public default void setFF(double kS, double kV, double kA) {}
 }

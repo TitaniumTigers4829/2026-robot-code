@@ -26,14 +26,14 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Temperature;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.HardwareConstants;
-import frc.robot.extras.math.interpolation.SingleLinearInterpolator;
-import frc.robot.subsystems.shooter.ShooterConstants;
-import frc.robot.subsystems.shooter.ShooterInterface;
 import frc.robot.subsystems.turret.TurretInterface.TurretInputs;
 
 /** Add your docs here. */
-public class PhysicalTurret implements ShooterInterface {
+public class PhysicalTurret implements TurretInterface {
 
   private final TalonFX turretMotor = new TalonFX(TurretConstants.TURRET_MOTOR_ID);
   private final CANcoder turretEncoder = new CANcoder(TurretConstants.TURRET_CANCODER_ID);
@@ -67,6 +67,9 @@ public class PhysicalTurret implements ShooterInterface {
     turretConfig.Slot0.kP = TurretConstants.TURRET_P;
     turretConfig.Slot0.kI = TurretConstants.TURRET_I;
     turretConfig.Slot0.kD = TurretConstants.TURRET_D;
+    turretConfig.Slot0.kS = TurretConstants.TURRET_S;
+    turretConfig.Slot0.kV = TurretConstants.TURRET_V;
+    turretConfig.Slot0.kA = TurretConstants.TURRET_A;
 
      turretConfig.MotionMagic.MotionMagicAcceleration =
         TurretConstants.MAX_ACCELERATION_ROTATIONS_PER_SECOND_SQUARED;
@@ -92,8 +95,7 @@ public class PhysicalTurret implements ShooterInterface {
     turretConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
     turretConfig.Feedback.FeedbackRemoteSensorID = turretEncoder.getDeviceID();
 
-    //We'll see if we need it i just don't want it to be an annoying error that i forget about :(
-    // turretConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    turretConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     turretMotor.getConfigurator().apply(turretConfig);
 
@@ -106,7 +108,7 @@ public class PhysicalTurret implements ShooterInterface {
             - turretMotor.getPosition().getValueAsDouble();
 
     BaseStatusSignal.setUpdateFrequencyForAll(
-      50.0, 
+      250.0, 
       turretAngle, 
       turretMotorAppliedVoltage,
       dutyCycle,
@@ -139,11 +141,18 @@ public class PhysicalTurret implements ShooterInterface {
   }
 
 
+  // Assumes facing the front of the robot is 0 rotations
+  // I know there's an easier way to do this
   public void setTurretAngle(double desiredAngle) {
     turretMotor.setControl(mmTorqueRequest.withPosition(desiredAngle));
   }
 
   //For manual in case turret angling fucks up
+  public void setSpeed(double speed) {
+    turretMotor.set(speed);
+  }
+
+
   public void openLoop(double output) {
     turretMotor.setControl(currentOut.withOutput(output));
   }
@@ -155,11 +164,20 @@ public class PhysicalTurret implements ShooterInterface {
   public double getVolts() {
     return turretMotorAppliedVoltage.getValueAsDouble();
   }
+
   @Override
   public void setPID(double kP, double kI, double kD) {
     turretConfig.Slot0.kP = kP;
     turretConfig.Slot0.kI = kI;
     turretConfig.Slot0.kD = kD;
+    turretMotor.getConfigurator().apply(turretConfig);
+  }
+
+  @Override
+  public void setFF(double kS, double kV, double kA) {
+    turretConfig.Slot0.kS = kS;
+    turretConfig.Slot0.kV = kV;
+    turretConfig.Slot0.kA = kA;
     turretMotor.getConfigurator().apply(turretConfig);
   }
 

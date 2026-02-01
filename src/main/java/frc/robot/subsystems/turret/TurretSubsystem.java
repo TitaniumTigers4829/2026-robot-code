@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.turret;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.extras.logging.LoggedTunableNumber;
@@ -44,6 +45,7 @@ public class TurretSubsystem extends SubsystemBase {
     return turretInterface.getVolts();
   }
 
+  //In rotations
   public void setTurretAngle(double targetAngle) {
     turretInterface.setTurretAngle(targetAngle);
   }
@@ -74,6 +76,12 @@ public class TurretSubsystem extends SubsystemBase {
         || turretI.hasChanged(hashCode())
         || turretD.hasChanged(hashCode())) {
       turretInterface.setPID(turretP.get(), turretI.get(), turretD.get());
+    }
+
+    if (turretS.hasChanged(hashCode())
+        || turretV.hasChanged(hashCode())
+        || turretA.hasChanged(hashCode())) {
+      turretInterface.setFF(turretS.get(), turretV.get(), turretA.get());
     }
   }
 }
