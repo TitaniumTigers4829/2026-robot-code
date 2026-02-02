@@ -61,19 +61,19 @@ public class HubLockTurret extends Command {
         TurretConstants.TURRET_OFFSET.rotateBy(heading));
     
     //Our turret angling math works as follows. Assuming the 0 rotations on the turret is
-    //facing the front of the robot and the turret rotates positively counterclockwise, we can approximate
-    //the angle it needs to turn in rotations from 0 to the target angle. This is the desired heading
-    //as it doesn't factor in the current angle. With our Translation2d of the turret, we can subtract the angle 
-    //that atan makes with the turret and the hub from our zero angle, which is the current heading of the robot.
-    //Since ccw is positive, we subract the angle which is retrieved in degrees from 360. This will get the radians needed
-    //to turn if the turret's 0 angle is the front of the robot.
+    //facing the current heading of the robot and the turret rotates positively counterclockwise, we can approximate
+    //the angle it needs to turn in rotations from 0 to the target angle. This is the desired heading. 
+    //With arctan we can calulate the angle the turret makes with the hub relative to the y axis, otherwise known as
+    //the field relative angle. The y axis is horizontal and the x axis is vertical from the driver station pov.
+    //We can subtract the heading (and therefore the zero angle) of the robot from the field relative angle. This
+    //will get the radians needed to turn to face the hub and when converted to rotations becomes the desired heading.
 
     // Gets y and x distances of the turret to the hub
     turretToHubYDist = hubPos.getY() - turretPos.getY();
     turretToHubXDist = hubPos.getX() - turretPos.getX();
 
     // Gets the needed angle for the turret to turn to face the hub in radians
-    turretAngleToHub = Math.toRadians(360 - (heading.getDegrees() - Math.toDegrees(Math.atan2(turretToHubYDist, turretToHubXDist))));
+    turretAngleToHub = (Math.atan2(turretToHubYDist, turretToHubXDist) - heading.getRadians());
 
     // Converts radians to rotations
     desiredHeading = turretAngleToHub/(2*Math.PI);

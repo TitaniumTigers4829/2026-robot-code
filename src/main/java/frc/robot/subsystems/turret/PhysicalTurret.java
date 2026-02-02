@@ -103,7 +103,6 @@ public class PhysicalTurret implements TurretInterface {
     turretConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     turretMotor.getConfigurator().apply(turretConfig);
-
     turretAngle = turretEncoder.getAbsolutePosition();
     turretMotorAppliedVoltage = turretMotor.getMotorVoltage();
     dutyCycle = turretMotor.getDutyCycle();
@@ -115,6 +114,7 @@ public class PhysicalTurret implements TurretInterface {
 
     // Higher frequency for turret angle because its more important that the other signals
     turretAngle.setUpdateFrequency(250.0);
+   
     BaseStatusSignal.setUpdateFrequencyForAll(
       50.0, 
       turretMotorAppliedVoltage,
@@ -135,7 +135,10 @@ public class PhysicalTurret implements TurretInterface {
       dutyCycle,
       statorCurrent,
       motorTemp);
-    inputs.turretAngle = turretAngle.getValueAsDouble();
+
+    inputs.turretAngle = turretAngle.getValueAsDouble() 
+      + BaseStatusSignal.getLatencyCompensatedValueAsDouble(
+        turretEncoder.getAbsolutePosition(), turretMotor.getVelocity());
     inputs.turretMotorAppliedVoltage = turretMotorAppliedVoltage.getValueAsDouble();
     inputs.turretDutyCycle = dutyCycle.getValueAsDouble();
     inputs.turretStatorCurrent = statorCurrent.getValueAsDouble();
@@ -151,11 +154,11 @@ public class PhysicalTurret implements TurretInterface {
   // Assumes facing the front of the robot is 0 rotations
   // Normalizes angle
   public void setTurretAngle(double desiredAngle) {
-    if ((desiredAngle - getTurretAngle()) < 1) {
+    if (Math.abs(desiredAngle - getTurretAngle()) < 0.5) {
       turretMotor.setControl(mmTorqueRequest.withPosition(desiredAngle));
     }
     else {
-      turretMotor.setControl(mmTorqueRequest.withPosition(desiredAngle - 1));
+      turretMotor.setControl(mmTorqueRequest.withPosition(Math.abs(Math.abs(desiredAngle) - 1)));
     }
   }
 
