@@ -4,8 +4,6 @@
 
 package frc.robot.commands.hublocking;
 
-import java.util.Optional;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -15,6 +13,7 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.turret.TurretSubsystem;
+import java.util.Optional;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class HubLockTurret extends Command {
@@ -41,8 +40,7 @@ public class HubLockTurret extends Command {
     // Sets hub position based on the alliance
     if (alliance.isPresent() && alliance.get() == Alliance.Red) {
       hubPos = FieldConstants.RED_HUB_CENTER;
-    }
-    else {
+    } else {
       hubPos = FieldConstants.BLUE_HUB_CENTER;
     }
   }
@@ -54,19 +52,25 @@ public class HubLockTurret extends Command {
     heading = swerveDrive.getOdometryRotation2d();
 
     // Gets the position of the turret
-    Translation2d turretPos = swerveDrive
-      .getEstimatedPose()
-      .getTranslation()
-      .plus(
-        TurretConstants.TURRET_OFFSET.rotateBy(heading));
-    
-    //Our turret angling math works as follows. Assuming the 0 rotations on the turret is
-    //facing the current heading of the robot and the turret rotates positively counterclockwise, we can approximate
-    //the angle it needs to turn in rotations from 0 to the target angle. This is the desired heading. 
-    //With arctan we can calulate the angle the turret makes with the hub relative to the y axis, otherwise known as
-    //the field relative angle. The y axis is horizontal and the x axis is vertical from the driver station pov.
-    //We can subtract the heading (and therefore the zero angle) of the robot from the field relative angle. This
-    //will get the radians needed to turn to face the hub and when converted to rotations becomes the desired heading.
+    Translation2d turretPos =
+        swerveDrive
+            .getEstimatedPose()
+            .getTranslation()
+            .plus(TurretConstants.TURRET_OFFSET.rotateBy(heading));
+
+    // Our turret angling math works as follows. Assuming the 0 rotations on the turret is
+    // facing the current heading of the robot and the turret rotates positively counterclockwise,
+    // we can approximate
+    // the angle it needs to turn in rotations from 0 to the target angle. This is the desired
+    // heading.
+    // With arctan we can calulate the angle the turret makes with the hub relative to the y axis,
+    // otherwise known as
+    // the field relative angle. The y axis is horizontal and the x axis is vertical from the driver
+    // station pov.
+    // We can subtract the heading (and therefore the zero angle) of the robot from the field
+    // relative angle. This
+    // will get the radians needed to turn to face the hub and when converted to rotations becomes
+    // the desired heading.
 
     // Gets y and x distances of the turret to the hub
     turretToHubYDist = hubPos.getY() - turretPos.getY();
@@ -76,7 +80,7 @@ public class HubLockTurret extends Command {
     turretAngleToHub = (Math.atan2(turretToHubYDist, turretToHubXDist) - heading.getRadians());
 
     // Converts radians to rotations
-    desiredHeading = turretAngleToHub/(2*Math.PI);
+    desiredHeading = turretAngleToHub / (2 * Math.PI);
 
     // Sets the turret to that angle
     turretSubsystem.setTurretAngle(desiredHeading);

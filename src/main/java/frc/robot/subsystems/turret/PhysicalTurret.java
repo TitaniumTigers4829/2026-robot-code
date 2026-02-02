@@ -7,13 +7,8 @@ package frc.robot.subsystems.turret;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-
-/** Add your docs here. */
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.ParentDevice;
@@ -21,16 +16,10 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Temperature;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.Constants.HardwareConstants;
-import frc.robot.subsystems.turret.TurretInterface.TurretInputs;
 
 /** Add your docs here. */
 public class PhysicalTurret implements TurretInterface {
@@ -54,9 +43,9 @@ public class PhysicalTurret implements TurretInterface {
 
   private final TalonFXConfiguration turretConfig = new TalonFXConfiguration();
   private final CANcoderConfiguration turretEncoderConfig = new CANcoderConfiguration();
-  
+
   public PhysicalTurret() {
-    
+
     turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.GEAR_RATIO;
 
     turretEncoderConfig.MagnetSensor.MagnetOffset = -TurretConstants.ANGLE_ZERO;
@@ -71,14 +60,14 @@ public class PhysicalTurret implements TurretInterface {
     turretConfig.Slot0.kV = TurretConstants.TURRET_V;
     turretConfig.Slot0.kA = TurretConstants.TURRET_A;
 
-     turretConfig.MotionMagic.MotionMagicAcceleration =
+    turretConfig.MotionMagic.MotionMagicAcceleration =
         TurretConstants.MAX_ACCELERATION_ROTATIONS_PER_SECOND_SQUARED;
     turretConfig.MotionMagic.MotionMagicCruiseVelocity =
         TurretConstants.MAX_VELOCITY_ROTATIONS_PER_SECOND;
 
     turretConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-     // Set current limits
+    // Set current limits
     turretConfig.CurrentLimits.StatorCurrentLimit = TurretConstants.STATOR_CURRENT_LIMIT;
     turretConfig.CurrentLimits.SupplyCurrentLimit = TurretConstants.SUPPLY_CURRENT_LIMIT;
     turretConfig.CurrentLimits.StatorCurrentLimitEnable =
@@ -87,8 +76,7 @@ public class PhysicalTurret implements TurretInterface {
         TurretConstants.SUPPLY_CURRENT_LIMIT_ENABLE;
 
     turretConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    turretConfig.MotorOutput.DutyCycleNeutralDeadband = 
-    TurretConstants.TURRET_DEADBAND;
+    turretConfig.MotorOutput.DutyCycleNeutralDeadband = TurretConstants.TURRET_DEADBAND;
 
     turretConfig.ClosedLoopGeneral.ContinuousWrap = true;
 
@@ -108,65 +96,51 @@ public class PhysicalTurret implements TurretInterface {
     dutyCycle = turretMotor.getDutyCycle();
     statorCurrent = turretMotor.getStatorCurrent();
     motorTemp = turretMotor.getDeviceTemp();
-    angleError = turretMotor.getClosedLoopReference().getValueAsDouble()
+    angleError =
+        turretMotor.getClosedLoopReference().getValueAsDouble()
             - turretMotor.getPosition().getValueAsDouble();
-
 
     // Higher frequency for turret angle because its more important that the other signals
     turretAngle.setUpdateFrequency(250.0);
-   
-    BaseStatusSignal.setUpdateFrequencyForAll(
-      50.0, 
-      turretMotorAppliedVoltage,
-      dutyCycle,
-      statorCurrent,
-      motorTemp);
-    ParentDevice.optimizeBusUtilizationForAll(
-      turretMotor, 
-      turretEncoder
-      );
 
+    BaseStatusSignal.setUpdateFrequencyForAll(
+        50.0, turretMotorAppliedVoltage, dutyCycle, statorCurrent, motorTemp);
+    ParentDevice.optimizeBusUtilizationForAll(turretMotor, turretEncoder);
   }
 
   public void updateInputs(TurretInputs inputs) {
     BaseStatusSignal.refreshAll(
-      turretAngle,
-      turretMotorAppliedVoltage,
-      dutyCycle,
-      statorCurrent,
-      motorTemp);
+        turretAngle, turretMotorAppliedVoltage, dutyCycle, statorCurrent, motorTemp);
 
-    inputs.turretAngle = turretAngle.getValueAsDouble() 
-      + BaseStatusSignal.getLatencyCompensatedValueAsDouble(
-        turretEncoder.getAbsolutePosition(), turretMotor.getVelocity());
+    inputs.turretAngle =
+        turretAngle.getValueAsDouble()
+            + BaseStatusSignal.getLatencyCompensatedValueAsDouble(
+                turretEncoder.getAbsolutePosition(), turretMotor.getVelocity());
     inputs.turretMotorAppliedVoltage = turretMotorAppliedVoltage.getValueAsDouble();
     inputs.turretDutyCycle = dutyCycle.getValueAsDouble();
     inputs.turretStatorCurrent = statorCurrent.getValueAsDouble();
     inputs.turretMotorTemp = motorTemp.getValueAsDouble();
   }
-  
+
   public double getTurretAngle(double angle) {
     turretAngle.refresh();
     return turretAngle.getValueAsDouble();
   }
-
 
   // Assumes facing the front of the robot is 0 rotations
   // Normalizes angle
   public void setTurretAngle(double desiredAngle) {
     if (Math.abs(desiredAngle - getTurretAngle()) < 0.5) {
       turretMotor.setControl(mmTorqueRequest.withPosition(desiredAngle));
-    }
-    else {
+    } else {
       turretMotor.setControl(mmTorqueRequest.withPosition(Math.abs(Math.abs(desiredAngle) - 1)));
     }
   }
 
-  //For manual in case turret angling fucks up
+  // For manual in case turret angling fucks up
   public void setSpeed(double speed) {
     turretMotor.set(speed);
   }
-
 
   public void openLoop(double output) {
     turretMotor.setControl(currentOut.withOutput(output));
@@ -195,5 +169,4 @@ public class PhysicalTurret implements TurretInterface {
     turretConfig.Slot0.kA = kA;
     turretMotor.getConfigurator().apply(turretConfig);
   }
-
 }

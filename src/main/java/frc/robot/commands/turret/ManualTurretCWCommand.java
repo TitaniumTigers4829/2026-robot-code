@@ -12,7 +12,9 @@ import frc.robot.subsystems.turret.TurretSubsystem;
 public class ManualTurretCWCommand extends Command {
   /** Creates a new ManualTurretCommand. */
   TurretSubsystem turretSubsystem;
+
   double speed = TurretConstants.CW_MANUAL_SPEED;
+
   public ManualTurretCWCommand(TurretSubsystem turretSubsystem) {
     this.turretSubsystem = turretSubsystem;
     addRequirements(turretSubsystem);

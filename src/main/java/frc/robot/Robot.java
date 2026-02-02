@@ -177,22 +177,16 @@ public class Robot extends LoggedRobot {
 
     // Reset robot odometry based on the most recent vision pose measurement from april tags
     // This should be pressed when looking at an april tag
-      driverController
-          .povLeft()
-          .onTrue(
-              new InstantCommand(
-                  () -> swerveDrive.resetEstimatedPose(visionSubsystem.getLastSeenPose())));
-      
-    // Commands for manual turret
-      driverController
-      .leftBumper()
-      .whileTrue(
-        new ManualTurretCCWCommand(turretSubsystem));
+    driverController
+        .povLeft()
+        .onTrue(
+            new InstantCommand(
+                () -> swerveDrive.resetEstimatedPose(visionSubsystem.getLastSeenPose())));
 
-      driverController
-      .rightBumper()
-      .whileTrue(
-        new ManualTurretCWCommand(turretSubsystem));
+    // Commands for manual turret
+    driverController.leftBumper().whileTrue(new ManualTurretCCWCommand(turretSubsystem));
+
+    driverController.rightBumper().whileTrue(new ManualTurretCWCommand(turretSubsystem));
   }
 
   /** Configures the operator controller buttons and axes to control the robot */
@@ -269,7 +263,7 @@ public class Robot extends LoggedRobot {
                 new PhysicalModule(SwerveConstants.compModuleConfigs[1]),
                 new PhysicalModule(SwerveConstants.compModuleConfigs[2]),
                 new PhysicalModule(SwerveConstants.compModuleConfigs[3]));
-        this.visionSubsystem = new VisionSubsystem(new VisionInterface() {}); //PhysicalVision
+        this.visionSubsystem = new VisionSubsystem(new VisionInterface() {}); // PhysicalVision
         this.shooterSubsystem = new ShooterSubsystem(new PhysicalShooter());
         this.turretSubsystem = new TurretSubsystem(new PhysicalTurret());
       }
