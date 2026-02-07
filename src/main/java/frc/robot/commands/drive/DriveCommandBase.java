@@ -30,7 +30,7 @@ public abstract class DriveCommandBase extends Command {
 
   @Override
   public void execute() {
-    //   swerveDrive.addPoseEstimatorSwerveMeasurement();
+    swerveDrive.addPoseEstimatorSwerveMeasurement();
 
     //   // Update the odometry information for the vision subsystem to use while filtering the
     // vision
