@@ -68,6 +68,10 @@ public class PhysicalAdjustableHood implements AdjustableHoodInterface {
     return hoodAngle.getValueAsDouble();
   }
 
+   public void setHoodAngle(double distance) {
+    hoodMotor.setControl(mmmmmm.withPosition(adjustableHoodLookupValues.getLookupValue(distance)));
+  }
+
   public void periodic() {
     SmartDashboard.putNumber("hoodAngle", getHoodAngle());
   }
