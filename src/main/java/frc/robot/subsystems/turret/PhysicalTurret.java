@@ -32,18 +32,6 @@ public class PhysicalTurret implements TurretInterface {
 
   private final CANcoder turretEncoder = new CANcoder(TurretConstants.TURRET_CANCODER_ID);
 
-  // TODO(second-cancoder): Uncomment when second CANcoder is physically installed.
-  // Mount this encoder on a separate gear with a different ratio to the turret ring
-  // so that its gear ratio is co-prime with the first encoder's gear ratio.
-  // See Team SCREAM 4522's write-up for gear tooth selection guidance.
-  //
-  // private final CANcoder turretEncoder2 =
-  //     new CANcoder(TurretConstants.TURRET_CANCODER_2_ID);
-
-  /* -------------------------------------------------------------------------- */
-  /*                                CONFIG OBJECTS                              */
-  /* -------------------------------------------------------------------------- */
-
   private final TalonFXConfiguration motorConfig = new TalonFXConfiguration();
 
   private final CANcoderConfiguration encoderConfig = new CANcoderConfiguration();
@@ -55,46 +43,9 @@ public class PhysicalTurret implements TurretInterface {
 
   private final DutyCycleOut dutyRequest = new DutyCycleOut(0.0);
 
-  /* -------------------------------------------------------------------------- */
-  /*                                GEAR RATIOS                                 */
-  /* -------------------------------------------------------------------------- */
-
-  // Total motor-to-turret gear ratio: 26.66667:1
-  // i.e. the motor spins 26.666667 times for every 1 full turret rotation.
-  // private static final double TOTAL_RATIO = TurretConstants.TOTAL_GEAR_RATIO;
-
-  // The CANcoder is NOT on the turret output. It sits on an intermediate shaft:
-  //
-  //   Motor ──(2.667:1)──► CANcoder shaft ──(16.666:1)──► Turret output
-  //
-  // MOTOR_TO_CANCODER = 44.444 / 16.666 ≈ 2.667
-  // This means the CANcoder shaft spins 2.667 times per 1 turret rotation,
-  // and the motor spins 2.667 times per 1 CANcoder shaft rotation.
-  // private static final double MOTOR_TO_CANCODER = TOTAL_RATIO /
-  // TurretConstants.CANCODER_TO_TURRET;
-
-  // TODO(second-cancoder): Add second encoder gear ratio constant in TurretConstants.
-  // The ratio must be co-prime with CANCODER_TO_TURRET (currently 16.666).
-  // Example: if you use a 17T gear on the encoder and a 77T turret ring,
-  // ratio = 77.0 / 17.0 ≈ 4.529. Check that gcd(numerator1, numerator2) = 1.
-  //
-  // private static final double MOTOR_TO_CANCODER_2 =
-  //     TOTAL_RATIO / TurretConstants.CANCODER_2_TO_TURRET;
-
-  /* -------------------------------------------------------------------------- */
-  /*                                STATUS SIGNALS                              */
-  /* -------------------------------------------------------------------------- */
-
   private final StatusSignal<Angle> motorPosition;
   private final StatusSignal<AngularVelocity> motorVelocity;
   private final StatusSignal<Angle> cancoderPosition;
-
-  // TODO(second-cancoder): Uncomment when second CANcoder is installed.
-  // private final StatusSignal<Angle> cancoderPosition2;
-
-  /* -------------------------------------------------------------------------- */
-  /*                                 CONSTRUCTOR                                */
-  /* -------------------------------------------------------------------------- */
 
   public PhysicalTurret() {
 
@@ -185,6 +136,7 @@ public class PhysicalTurret implements TurretInterface {
     // BaseStatusSignal.refreshAll(
     //     motorPosition, motorVelocity, motorVoltage, motorCurrent, motorTemp);
 
+    motorPosition.setUpdateFrequency(200);
     motorPosition.refresh();
     motorVelocity.refresh();
     cancoderPosition.refresh();

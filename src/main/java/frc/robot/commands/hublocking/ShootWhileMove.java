@@ -121,15 +121,16 @@ public class ShootWhileMove extends Command {
       velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * dampener;
       velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * dampener;
 
-      omegaXOffset =
-          -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
-      omegaYOffset =
-          velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
+      // omegaXOffset =
+      //     -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
+      //     SmartDashboard.putNumber("omega x offset", omegaXOffset);
+      // omegaYOffset =
+      //     velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
 
       offsettedTarget =
           new Pose2d(
-              targetPosition.getX() - velocityXOffset - omegaXOffset,
-              targetPosition.getY() - velocityYOffset - omegaYOffset,
+              targetPosition.getX() - velocityXOffset,
+              targetPosition.getY() - velocityYOffset,
               new Rotation2d());
 
       iterativeDistance = offsettedTarget.getTranslation().getDistance(turretPose);
@@ -147,29 +148,29 @@ public class ShootWhileMove extends Command {
 
     desiredHeading -= 0.25; // .25 is because we zero it facing left instead of forward
 
-    turret.setTurretAngle(desiredHeading);
-    if (Math.abs(desiredHeading * TurretConstants.CANCODER_TO_TURRET - turret.getTurretAngle())
-        < .1) {
-      isAimingProperly = true;
-    } else {
-      isAimingProperly = false;
-    }
+    // turret.setTurretAngle(desiredHeading);
+    // if (Math.abs(desiredHeading * TurretConstants.CANCODER_TO_TURRET - turret.getTurretAngle())
+    //     < .05) {
+    //   isAimingProperly = true;
+    // } else {
+    //   isAimingProperly = false;
+    // }
 
-    SmartDashboard.putBoolean("aiming properly", isAimingProperly);
+    // SmartDashboard.putBoolean("aiming properly", isAimingProperly);
 
-    if (isAimingProperly) {
-      shooter.setPercentOutput(distance, useOneMotor.getAsBoolean());
-    } else {
-      shooter.stopShoot();
-    }
-    shooter.setPercentOutput(distance, useOneMotor.getAsBoolean());
+    // if (isAimingProperly) {
+    //   shooter.setPercentOutput(distance);
+    // } else {
+    //   shooter.stopShoot();
+    // }
+    // shooter.setPercentOutput(distance);
 
-    if (this.overridingHood.getAsBoolean()) {
-      shooter.setRollerSpeed(0);
-      shooter.stopShoot();
-    } else {
-      hood.setHoodAngle(distance);
-    }
+    // if (this.overridingHood.getAsBoolean()) {
+    //   shooter.setRollerSpeed(0);
+    //   shooter.stopShoot();
+    // } else {
+    //   hood.setHoodAngle(distance);
+    // }
 
     Logger.recordOutput("Shoot on move At Hub/Desired Hub", offsettedTarget);
 

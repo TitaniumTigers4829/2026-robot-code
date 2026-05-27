@@ -169,9 +169,9 @@ public class Robot extends LoggedRobot {
             swerveDrive,
             visionSubsystem,
             // Translation in the X direction
-            () -> driverLeftStick[0].getAsDouble() * 0.05,
+            () -> driverLeftStick[0].getAsDouble() * 0.25,
             // Translation in the Y direction
-            () -> driverLeftStick[1].getAsDouble() * 0.05,
+            () -> driverLeftStick[1].getAsDouble() * 0.25,
             // Rotation
             () -> JoystickUtil.modifyAxis(driverController::getRightX, 3),
             // Robot relative

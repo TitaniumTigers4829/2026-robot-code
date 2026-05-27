@@ -143,11 +143,11 @@ public class PassFuelCommand extends Command {
     }
 
     if (isAimingProperly) {
-      shooter.setPercentOutput(distance, false);
+      shooter.setPercentOutput(distance);
     } else {
       shooter.stopShoot();
     }
-    shooter.setPercentOutput(distance, false);
+    shooter.setPercentOutput(distance);
 
     if (this.overridingHood.getAsBoolean()) {
       shooter.setRollerSpeed(0);

@@ -47,7 +47,7 @@ public class TurretConstants {
   /* -------------------------------------------------------------------------- */
 
   public static double MAX_VELOCITY_ROTATIONS_PER_SECOND = 10;
-  public static double MAX_ACCELERATION_ROTATIONS_PER_SECOND_SQUARED = 40;
+  public static double MAX_ACCELERATION_ROTATIONS_PER_SECOND_SQUARED = 50;
 
   /* -------------------------------------------------------------------------- */
   /*                             MANUAL CONTROL                                 */
