@@ -165,7 +165,7 @@ public class PhysicalShooter implements ShooterInterface {
       reachedSpeedOnce = true;
     }
 
-    if (counter1 < 40) {
+    if (counter1 < 100) {
       setRollerSpeed(0);
       setKickerSpeed(0);
       return;
@@ -173,7 +173,7 @@ public class PhysicalShooter implements ShooterInterface {
 
     setKickerSpeed(ShooterConstants.KICKER_PERCENT_OUTPUT);
 
-    if (counter1 < 65) {
+    if (counter1 < 150) {
       setRollerSpeed(-ShooterConstants.SPINDEXER_SHOOT_SPEED);
       return;
     }
@@ -193,9 +193,9 @@ public class PhysicalShooter implements ShooterInterface {
 
       double rollerSpeed = ShooterConstants.SPINDEXER_SHOOT_SPEED;
 
-      if (isPausingRollerFloor && pauseRollerFloorCounter < 30) {
+      if (isPausingRollerFloor && pauseRollerFloorCounter < 55) {
         rollerSpeed = 0;
-      } else if (isPausingRollerFloor && pauseRollerFloorCounter >= 30) {
+      } else if (isPausingRollerFloor && pauseRollerFloorCounter >= 55) {
         isPausingRollerFloor = false;
         rollerWasUpToSpeed = false;
         pauseRollerFloorCounter = 0;
