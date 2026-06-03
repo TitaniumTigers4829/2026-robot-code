@@ -26,9 +26,9 @@ public class ShooterConstants {
   public static double FLYWHEEL_ERROR_TOLERANCE = 2;
 
   public static double PASS_SHOOTER_SPEED = -1;
-  public static double KICKER_PERCENT_OUTPUT = 0.8;
-  public static double SPINDEXER_INTAKE_SPEED = -0.2; // 0.675
-  public static double SPINDEXER_SHOOT_SPEED = -.4; // 0.675
+  public static double KICKER_PERCENT_OUTPUT = 1;
+  public static double SPINDEXER_INTAKE_SPEED = -1; // 0.675
+  public static double SPINDEXER_SHOOT_SPEED = -0.675; // 0.675
 
   // Lookup table for rpms needed for certain distances
   public static double[][] DISTANCE_TO_FLYWHEEL_RPM = {

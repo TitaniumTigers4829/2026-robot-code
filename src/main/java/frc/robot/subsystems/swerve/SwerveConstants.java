@@ -188,7 +188,7 @@ public class SwerveConstants {
           InvertedValue.CounterClockwise_Positive;
     }
 
-    public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = 10; // 20 //10
+    public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = 20; // 20 //10
     public static final double LOW_ANGULAR_SPEED_RADIANS_PER_SECOND = 5; // 5
 
     public static final double MAX_SPEED_METERS_PER_SECOND = 4.85; // 4.85

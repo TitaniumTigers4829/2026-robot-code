@@ -79,7 +79,7 @@ public class PhysicalShooter implements ShooterInterface {
     leaderFlywheelConfig.Slot0.kV = ShooterConstants.FLYWHEEL_V;
     leaderFlywheelConfig.Slot0.kA = ShooterConstants.FLYWHEEL_A;
     // TODO: drop down
-    leaderFlywheelConfig.CurrentLimits.StatorCurrentLimit = 80;
+    leaderFlywheelConfig.CurrentLimits.StatorCurrentLimit = 120;
 
     // leaderFlywheelConfig.CurrentLimits.SupplyCurrentLimit = 160;
     leaderFlywheelConfig.TorqueCurrent.PeakForwardTorqueCurrent = 80;
@@ -107,8 +107,8 @@ public class PhysicalShooter implements ShooterInterface {
     rollerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-    kickerConfig.CurrentLimits.StatorCurrentLimit = 60;
-    kickerConfig.CurrentLimits.SupplyCurrentLimit = 60;
+    kickerConfig.CurrentLimits.StatorCurrentLimit = 100;
+    kickerConfig.CurrentLimits.SupplyCurrentLimit = 100;
     kickerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     kickerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     kickerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -165,37 +165,38 @@ public class PhysicalShooter implements ShooterInterface {
       reachedSpeedOnce = true;
     }
 
-    if (counter1 < 40) {
-      setRollerSpeed(0);
-      setKickerSpeed(0);
+    if (counter1 < 20) {
+      setRollerSpeed(-ShooterConstants.SPINDEXER_SHOOT_SPEED);
+      setKickerSpeed(-ShooterConstants.KICKER_PERCENT_OUTPUT);
       return;
     }
 
-    setKickerSpeed(ShooterConstants.KICKER_PERCENT_OUTPUT);
+    // setKickerSpeed(ShooterConstants.KICKER_PERCENT_OUTPUT);
 
-    if (counter1 < 65) {
-      setRollerSpeed(-ShooterConstants.SPINDEXER_SHOOT_SPEED);
+    if (counter1 > 20) {
+      setRollerSpeed(ShooterConstants.SPINDEXER_SHOOT_SPEED);
+      setKickerSpeed(ShooterConstants.KICKER_PERCENT_OUTPUT);
       return;
     }
 
     double averageRollerVelocity =
         Math.abs(rollerVelocityFilter.calculate(rollerVelocity.refresh().getValueAsDouble()));
 
-    if (averageRollerVelocity > 5) rollerWasUpToSpeed = true;
+    if (averageRollerVelocity > 2.5) rollerWasUpToSpeed = true;
 
     if (reachedSpeedOnce) {
       if (isPausingRollerFloor) pauseRollerFloorCounter++;
 
-      if (averageRollerVelocity < 5 && rollerWasUpToSpeed) {
+      if (averageRollerVelocity < 2.5 && rollerWasUpToSpeed) {
         isPausingRollerFloor = true;
         rollerWasUpToSpeed = false;
       }
 
       double rollerSpeed = ShooterConstants.SPINDEXER_SHOOT_SPEED;
 
-      if (isPausingRollerFloor && pauseRollerFloorCounter < 30) {
+      if (isPausingRollerFloor && pauseRollerFloorCounter < 55) {
         rollerSpeed = 0;
-      } else if (isPausingRollerFloor && pauseRollerFloorCounter >= 30) {
+      } else if (isPausingRollerFloor && pauseRollerFloorCounter >= 55) {
         isPausingRollerFloor = false;
         rollerWasUpToSpeed = false;
         pauseRollerFloorCounter = 0;
@@ -234,12 +235,12 @@ public class PhysicalShooter implements ShooterInterface {
     double averageRollerVelocity =
         Math.abs(rollerVelocityFilter.calculate(rollerVelocity.refresh().getValueAsDouble()));
 
-    if (averageRollerVelocity > 5) rollerWasUpToSpeed = true;
+    if (averageRollerVelocity > 2.5) rollerWasUpToSpeed = true;
 
     if (reachedSpeedOnce) {
       if (isPausingRollerFloor) pauseRollerFloorCounter++;
 
-      if (averageRollerVelocity < 5 && rollerWasUpToSpeed) {
+      if (averageRollerVelocity < 2.5 && rollerWasUpToSpeed) {
         isPausingRollerFloor = true;
         rollerWasUpToSpeed = false;
       }
