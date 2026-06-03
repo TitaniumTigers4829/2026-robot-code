@@ -32,18 +32,6 @@ public class PhysicalTurret implements TurretInterface {
 
   private final CANcoder turretEncoder = new CANcoder(TurretConstants.TURRET_CANCODER_ID);
 
-  // TODO(second-cancoder): Uncomment when second CANcoder is physically installed.
-  // Mount this encoder on a separate gear with a different ratio to the turret ring
-  // so that its gear ratio is co-prime with the first encoder's gear ratio.
-  // See Team SCREAM 4522's write-up for gear tooth selection guidance.
-  //
-  // private final CANcoder turretEncoder2 =
-  //     new CANcoder(TurretConstants.TURRET_CANCODER_2_ID);
-
-  /* -------------------------------------------------------------------------- */
-  /*                                CONFIG OBJECTS                              */
-  /* -------------------------------------------------------------------------- */
-
   private final TalonFXConfiguration motorConfig = new TalonFXConfiguration();
 
   private final CANcoderConfiguration encoderConfig = new CANcoderConfiguration();
