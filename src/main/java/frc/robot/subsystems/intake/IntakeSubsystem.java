@@ -53,7 +53,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
-    this.intakeInterface.setSpeed(speed);
+    this.intakeInterface.setIntakePercentOut(speed);
   }
 
   public void zeroAngle() {
@@ -65,7 +65,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setPivotSpeed(double speed) {
-    this.intakeInterface.setPivotSpeed(speed);
+    this.intakeInterface.setPivotPercentOut(speed);
   }
 
   public double getIntakeAngle() {
@@ -77,11 +77,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void setPivotSpeedUp() {
-    this.intakeInterface.setPivotSpeedUp();
+    this.intakeInterface.setPivotPosUp();
   }
 
   public void setPivotSpeedDown() {
-    this.intakeInterface.setPivotSpeedDown();
+    this.intakeInterface.setPivotPosDown();
   }
 
   public boolean isIntakeDeployed() {

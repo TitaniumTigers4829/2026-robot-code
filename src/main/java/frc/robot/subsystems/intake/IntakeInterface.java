@@ -23,15 +23,15 @@ public interface IntakeInterface extends Subsystem {
 
   public default void setAngle(double angle) {}
 
-  public default void setSpeed(double speed) {}
+  public default void setIntakePercentOut(double speed) {}
 
-  public default void setPivotSpeed(double angle) {}
+  public default void setPivotPercentOut(double angle) {}
 
   public default void zeroAngle() {}
 
-  public default void setPivotSpeedUp() {}
+  public default void setPivotPosUp() {}
 
-  public default void setPivotSpeedDown() {}
+  public default void setPivotPosDown() {}
 
   public default double getIntakeAngle() {
     return 0.0;

@@ -218,6 +218,8 @@ public class SwerveConstants {
     public static final double DRIVE_SUPPLY_LIMIT = 55.0;
     public static final double DRIVE_STATOR_LIMIT = 60.0;
 
+
+    // TODO: TUNE THESE VALUES!!! LITTLE SKETCH ABOUT HOW HIGH OUR P AND D IS
     public static final double TURN_P = 1000.0;
     public static final double TURN_I = 0.0;
     public static final double TURN_D = 25.0;

@@ -104,7 +104,6 @@ public class PhysicalModule implements ModuleInterface {
     turnConfig.CurrentLimits.SupplyCurrentLimit = 15;
     turnConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     turnConfig.MotorOutput.ControlTimesyncFreqHz = 250;
-    turnMotor.getConfigurator().apply(turnConfig, HardwareConstants.LOOP_TIME_SECONDS);
 
     turnConfig.Slot0.kP = ModuleConstants.TURN_P;
     turnConfig.Slot0.kI = ModuleConstants.TURN_I;
@@ -112,6 +111,8 @@ public class PhysicalModule implements ModuleInterface {
     turnConfig.Slot0.kS = ModuleConstants.TURN_S;
     turnConfig.Slot0.kV = ModuleConstants.TURN_V;
     turnConfig.Slot0.kA = ModuleConstants.TURN_A;
+
+    turnMotor.getConfigurator().apply(turnConfig, HardwareConstants.LOOP_TIME_SECONDS);
 
     drivePosition = driveMotor.getPosition();
     driveVelocity = driveMotor.getVelocity();

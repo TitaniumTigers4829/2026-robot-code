@@ -158,11 +158,11 @@ public class ShootWhileMove extends Command {
     SmartDashboard.putBoolean("aiming properly", isAimingProperly);
 
     if (isAimingProperly) {
-      shooter.setPercentOutput(distance, useOneMotor.getAsBoolean());
+      shooter.shootUsingDistance(distance, useOneMotor.getAsBoolean());
     } else {
       shooter.stopShoot();
     }
-    shooter.setPercentOutput(distance, useOneMotor.getAsBoolean());
+    shooter.shootUsingDistance(distance, useOneMotor.getAsBoolean());
 
     if (this.overridingHood.getAsBoolean()) {
       shooter.setRollerSpeed(0);

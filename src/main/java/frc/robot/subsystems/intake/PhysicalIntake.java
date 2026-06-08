@@ -92,8 +92,8 @@ public class PhysicalIntake implements IntakeInterface {
     pivotConfig.Feedback.FeedbackRemoteSensorID = pivotEncoder.getDeviceID();
     pivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
 
-    pivotConfig.CurrentLimits.StatorCurrentLimit = IntakeConstants.OUTER_STATOR_CURRENT_LIMIT;
-    pivotConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.OUTER_SUPPLY_CURRENT_LIMIT;
+    pivotConfig.CurrentLimits.StatorCurrentLimit = IntakeConstants.PIVOT_STATOR_CURRENT_LIMIT;
+    pivotConfig.CurrentLimits.SupplyCurrentLimit = IntakeConstants.PIVOT_SUPPLY_CURRENT_LIMIT;
     pivotConfig.CurrentLimits.StatorCurrentLimitEnable = false;
     pivotConfig.CurrentLimits.SupplyCurrentLimitEnable = false;
 
@@ -154,12 +154,12 @@ public class PhysicalIntake implements IntakeInterface {
     intakeMotorInside.set(-IntakeConstants.INTAKE_SPEED_INNER);
   }
 
-  public void setSpeed(double speed) {
+  public void setIntakePercentOut(double speed) {
     intakeMotorOuter.set(speed);
     intakeMotorInside.set(speed);
   }
 
-  public void setPivotSpeed(double speed) {
+  public void setPivotPercentOut(double speed) {
     intakePivotMotorRight.set(speed);
     // intakePivotMotorLeft.set(speed);
   }
@@ -170,12 +170,12 @@ public class PhysicalIntake implements IntakeInterface {
     //     new Follower(intakePivotMotorLeft.getDeviceID(), pivotMotorAlignment));
   }
 
-  public void setPivotSpeedUp() {
+  public void setPivotPosUp() {
     intakePivotMotorRight.setControl(request.withPosition(IntakeConstants.PIVOT_UP_POSITION));
     // intakePivotMotorLeft.setControl(request.withPosition(IntakeConstants.PIVOT_UP_POSITION));
   }
 
-  public void setPivotSpeedDown() {
+  public void setPivotPosDown() {
     intakePivotMotorRight.setControl(request.withPosition(IntakeConstants.PIVOT_DOWN_POSITION));
     // intakePivotMotorLeft.setControl(request.withPosition(IntakeConstants.PIVOT_DOWN_POSITION));
   }

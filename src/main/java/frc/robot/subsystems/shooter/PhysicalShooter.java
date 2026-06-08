@@ -143,7 +143,7 @@ public class PhysicalShooter implements ShooterInterface {
   }
 
   // test
-  public void setPercentOutput(double distance, boolean useOneMotor) {
+  public void shootUsingDistance(double distance, boolean useOneMotor) {
     counter1++;
     SmartDashboard.putNumber("counter1", counter1);
     double desiredSpeed = flywheelRPMLookupValues.getLookupValue(distance);
