@@ -13,14 +13,11 @@ import frc.robot.extras.math.interpolation.SingleLinearInterpolator;
 import frc.robot.subsystems.adjustableHood.AdjustableHoodSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.swerve.SwerveDrive;
-import frc.robot.subsystems.turret.TurretConstants;
-import frc.robot.subsystems.turret.TurretSubsystem;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import org.littletonrobotics.junction.Logger;
 
 public class ShootWhileMove extends Command {
-  private final TurretSubsystem turret;
   private final ShooterSubsystem shooter;
   private final AdjustableHoodSubsystem hood;
   private final SwerveDrive drive;
@@ -30,7 +27,6 @@ public class ShootWhileMove extends Command {
   Pose2d robotPose;
   Translation2d targetPosition;
   Pose2d offsettedTarget;
-  Translation2d turretOffsetPose = TurretConstants.TURRET_OFFSET;
   Translation2d turretPose;
   double deltaX = 0;
   double deltaY = 0;
@@ -61,27 +57,23 @@ public class ShootWhileMove extends Command {
 
   public ShootWhileMove(
       SwerveDrive drive,
-      TurretSubsystem turret,
       ShooterSubsystem shooter,
       AdjustableHoodSubsystem hood,
       BooleanSupplier overridingHood,
       BooleanSupplier useOneMotor) {
     this.drive = drive;
-    this.turret = turret;
     this.shooter = shooter;
     this.hood = hood;
     this.overridingHood = overridingHood;
     this.useOneMotor = useOneMotor;
-    addRequirements(turret, shooter, hood);
   }
 
   // Still lets you make a "normal" one for if you never want to override e.g. autos
   public ShootWhileMove(
       SwerveDrive drive,
-      TurretSubsystem turret,
       ShooterSubsystem shooter,
       AdjustableHoodSubsystem hood) {
-    this(drive, turret, shooter, hood, () -> false, () -> false);
+    this(drive, shooter, hood, () -> false, () -> false);
   }
 
   @Override
@@ -101,8 +93,6 @@ public class ShootWhileMove extends Command {
   public void execute() {
     dampener = -0.5;
     robotPose = drive.getEstimatedPose();
-    turretPose =
-        robotPose.getTranslation().plus(turretOffsetPose.rotateBy(robotPose.getRotation()));
 
     fieldRelative =
         ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), robotPose.getRotation());
@@ -147,13 +137,6 @@ public class ShootWhileMove extends Command {
 
     desiredHeading -= 0.25; // .25 is because we zero it facing left instead of forward
 
-    turret.setTurretAngle(desiredHeading);
-    if (Math.abs(desiredHeading * TurretConstants.CANCODER_TO_TURRET - turret.getTurretAngle())
-        < .1) {
-      isAimingProperly = true;
-    } else {
-      isAimingProperly = false;
-    }
 
     SmartDashboard.putBoolean("aiming properly", isAimingProperly);
 

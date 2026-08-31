@@ -38,8 +38,6 @@ import frc.robot.subsystems.swerve.SwerveConstants;
 import frc.robot.subsystems.swerve.SwerveDrive;
 import frc.robot.subsystems.swerve.gyro.PhysicalGyroPigeon;
 import frc.robot.subsystems.swerve.module.PhysicalModule;
-import frc.robot.subsystems.turret.PhysicalTurret;
-import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.PhysicalVision;
 import frc.robot.subsystems.vision.VisionInterface;
 import frc.robot.subsystems.vision.VisionSubsystem;
@@ -65,7 +63,6 @@ public class Robot extends LoggedRobot {
   private SwerveDrive swerveDrive;
   private VisionSubsystem visionSubsystem;
   private ShooterSubsystem shooterSubsystem;
-  private TurretSubsystem turretSubsystem;
   private AdjustableHoodSubsystem hoodSubsystem;
   private IntakeSubsystem intakeSubsystem;
 

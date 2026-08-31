@@ -12,13 +12,10 @@ import frc.robot.extras.math.interpolation.SingleLinearInterpolator;
 import frc.robot.subsystems.adjustableHood.AdjustableHoodSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.swerve.SwerveDrive;
-import frc.robot.subsystems.turret.TurretConstants;
-import frc.robot.subsystems.turret.TurretSubsystem;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
 public class PassFuelCommand extends Command {
-  private final TurretSubsystem turret;
   private final ShooterSubsystem shooter;
   private final AdjustableHoodSubsystem hood;
   private final SwerveDrive drive;
@@ -27,7 +24,6 @@ public class PassFuelCommand extends Command {
   Pose2d robotPose;
   double targetX;
   Pose2d offsettedTarget;
-  Translation2d turretOffsetPose = TurretConstants.TURRET_OFFSET;
   Translation2d turretPose;
   double deltaX = 0;
   double deltaY = 0;
@@ -59,17 +55,14 @@ public class PassFuelCommand extends Command {
           });
 
   public PassFuelCommand(
-      SwerveDrive drive,
-      TurretSubsystem turret,
-      ShooterSubsystem shooter,
+      SwerveDrive drive,      ShooterSubsystem shooter,
       AdjustableHoodSubsystem hood,
       BooleanSupplier overridingHood) {
     this.drive = drive;
-    this.turret = turret;
     this.shooter = shooter;
     this.hood = hood;
     this.overridingHood = overridingHood;
-    addRequirements(turret, shooter, hood);
+    addRequirements(shooter, hood);
   }
 
   @Override

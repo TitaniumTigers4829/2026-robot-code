@@ -12,8 +12,6 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.commands.drive.DriveCommandBase;
 import frc.robot.subsystems.adjustableHood.AdjustableHoodSubsystem;
 import frc.robot.subsystems.swerve.SwerveDrive;
-import frc.robot.subsystems.turret.TurretConstants;
-import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import java.util.Optional;
 
@@ -21,7 +19,6 @@ public class HubLockCommand extends DriveCommandBase {
 
   SwerveDrive swerveDrive;
   VisionSubsystem visionSubsystem;
-  TurretSubsystem turretSubsystem;
   AdjustableHoodSubsystem hoodSubsystem;
   public double desiredHeading;
   public Rotation2d heading;
@@ -31,18 +28,7 @@ public class HubLockCommand extends DriveCommandBase {
   public double turretToHubXDist;
   public double turretToHubDist;
 
-  public HubLockCommand(
-      SwerveDrive swerveDrive,
-      VisionSubsystem visionSubsystem,
-      AdjustableHoodSubsystem hoodSubsystem,
-      TurretSubsystem turretSubsystem) {
-    super(swerveDrive, visionSubsystem);
-    this.swerveDrive = swerveDrive;
-    this.visionSubsystem = visionSubsystem;
-    this.turretSubsystem = turretSubsystem;
-    this.hoodSubsystem = hoodSubsystem;
-    addRequirements(hoodSubsystem, turretSubsystem);
-  }
+  
 
   @Override
   public void initialize() {
@@ -62,13 +48,7 @@ public class HubLockCommand extends DriveCommandBase {
     heading = swerveDrive.getOdometryRotation2d();
 
     // Gets the position of the turret
-    Translation2d turretPos =
-        swerveDrive
-            .getEstimatedPose()
-            .getTranslation()
-            .plus(TurretConstants.TURRET_OFFSET.rotateBy(heading));
-    super.execute();
-    /**
+   /**
      * Our turret angling math works as follows. Assuming the 0 rotations on the turret is facing
      * the current heading of the robot and the turret rotates positively counterclockwise, we can
      * approximate the angle it needs to turn in rotations from 0 to the target angle. This is the
@@ -92,8 +72,6 @@ public class HubLockCommand extends DriveCommandBase {
     desiredHeading = turretAngleRad / (2.0 * Math.PI);
 
     // Clamp to turret limits
-    desiredHeading =
-        Math.max(TurretConstants.MIN_ANGLE, Math.min(TurretConstants.MAX_ANGLE, desiredHeading));
 
     // TODO: uncomment
     // turretSubsystem.setTurretAngle(desiredHeading);
@@ -113,7 +91,6 @@ public class HubLockCommand extends DriveCommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    turretSubsystem.setSpeed(0);
     // hoodSubsystem.setSpeed(0);
     hoodSubsystem.resetHoodPID();
     hoodSubsystem.setAngleWithoutDist(0);
