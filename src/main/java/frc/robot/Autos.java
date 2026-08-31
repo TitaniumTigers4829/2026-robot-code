@@ -20,7 +20,6 @@ import frc.robot.subsystems.adjustableHood.AdjustableHoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.swerve.SwerveDrive;
-import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import java.util.HashMap;
 import java.util.function.Supplier;
@@ -34,7 +33,6 @@ public class Autos {
   private SwerveDrive swerveDrive;
   private VisionSubsystem visionSubsystem;
   private IntakeSubsystem intakeSubsystem;
-  private TurretSubsystem turretSubsystem;
   private ShooterSubsystem shooterSubsystem;
   private AdjustableHoodSubsystem hoodSubsystem;
   private final String NONE_NAME = "Do Nothing";
@@ -49,13 +47,11 @@ public class Autos {
       SwerveDrive swerveDrive,
       VisionSubsystem visionSubsystem,
       ShooterSubsystem shooterSubsystem,
-      TurretSubsystem turretSubsystem,
       AdjustableHoodSubsystem hoodSubsystem,
       IntakeSubsystem intakeSubsystem) {
     this.swerveDrive = swerveDrive;
     this.visionSubsystem = visionSubsystem;
     this.hoodSubsystem = hoodSubsystem;
-    this.turretSubsystem = turretSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.intakeSubsystem = intakeSubsystem;
     chooser = new LoggedDashboardChooser<>("Auto Chooser");
@@ -113,7 +109,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(5),
                     new IntakePivotBounceLower(intakeSubsystem)),
                 Commands.deadline(
@@ -126,7 +122,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(5),
                     new IntakePivotBounceLower(intakeSubsystem))));
     // Commands.sequence(
@@ -136,7 +132,7 @@ public class Autos {
     // Commands.parallel(
     // new IntakePivotBounceLower(intakeSubsystem).withTimeout(5),
     // new ShootWhileMove(
-    // swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+    // swerveDrive, shooterSubsystem, hoodSubsystem)
     // .withTimeout(10)),
     // new InstantCommand(
     // () -> swerveDrive.resetEstimatedPose(visionSubsystem.getLastSeenPose()))));
@@ -165,7 +161,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(5),
                     new IntakePivotBounceLower(intakeSubsystem)),
                 Commands.deadline(
@@ -178,7 +174,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(5),
                     new IntakePivotBounceLower(intakeSubsystem))));
     return routine;
@@ -205,7 +201,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(5),
                     new IntakePivotBounceLower(intakeSubsystem)),
                 Commands.deadline(
@@ -218,7 +214,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(5),
                     new IntakePivotBounceLower(intakeSubsystem))));
     return routine;
@@ -244,7 +240,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(5),
                     new IntakePivotBounceLower(intakeSubsystem)),
                 Commands.deadline(
@@ -257,7 +253,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(5),
                     new IntakePivotBounceLower(intakeSubsystem))));
     return routine;
@@ -283,7 +279,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(5),
                     new IntakePivotBounceLower(intakeSubsystem)),
                 Commands.deadline(
@@ -296,7 +292,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(5),
                     new IntakePivotBounceLower(intakeSubsystem))));
     return routine;
@@ -321,7 +317,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(10),
                     new IntakePivotBounceLower(intakeSubsystem))));
     return routine;
@@ -346,7 +342,7 @@ public class Autos {
                     .withTimeout(.1),
                 Commands.deadline(
                     new ShootWhileMove(
-                            swerveDrive, turretSubsystem, shooterSubsystem, hoodSubsystem)
+                            swerveDrive, shooterSubsystem, hoodSubsystem)
                         .withTimeout(10),
                     new IntakePivotBounceLower(intakeSubsystem))));
     return routine;

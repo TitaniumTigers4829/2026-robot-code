@@ -81,10 +81,7 @@ public class PassFuelCommand extends Command {
     dampener = -1;
 
     robotPose = drive.getEstimatedPose();
-    turretPose =
-        robotPose.getTranslation().plus(turretOffsetPose.rotateBy(robotPose.getRotation()));
-
-    fieldRelative =
+        fieldRelative =
         ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), robotPose.getRotation());
 
     velocityOmega = drive.getChassisSpeeds().omegaRadiansPerSecond;
@@ -100,11 +97,6 @@ public class PassFuelCommand extends Command {
 
       velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * dampener;
       velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * dampener;
-
-      omegaXOffset =
-          -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
-      omegaYOffset =
-          velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
 
       offsettedTarget =
           new Pose2d(
@@ -126,30 +118,7 @@ public class PassFuelCommand extends Command {
     double desiredHeading = turretAngleRad / (2.0 * Math.PI);
 
     desiredHeading -= 0.25; // .25 is because we zero it facing left instead of forward
-
-    turret.setTurretAngle(desiredHeading);
-    if (Math.abs(desiredHeading * TurretConstants.CANCODER_TO_TURRET - turret.getTurretAngle())
-        < .1) {
-      isAimingProperly = true;
-    } else {
-      isAimingProperly = false;
-    }
-
-    if (isAimingProperly) {
-      shooter.setPercentOutput(distance, false);
-    } else {
-      shooter.stopShoot();
-    }
-    shooter.setPercentOutput(distance, false);
-
-    if (this.overridingHood.getAsBoolean()) {
-      shooter.setRollerSpeed(0);
-      shooter.stopShoot();
-    } else {
-      hood.setHoodAngle(distance);
-    }
   }
-
   @Override
   public boolean isFinished() {
     return false;

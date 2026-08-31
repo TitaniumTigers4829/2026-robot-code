@@ -111,11 +111,6 @@ public class ShootWhileMove extends Command {
       velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * dampener;
       velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * dampener;
 
-      omegaXOffset =
-          -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
-      omegaYOffset =
-          velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
-
       offsettedTarget =
           new Pose2d(
               targetPosition.getX() - velocityXOffset - omegaXOffset,

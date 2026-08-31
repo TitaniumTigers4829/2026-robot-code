@@ -25,8 +25,6 @@ import frc.robot.commands.intake.ReverseKickerAndRollers;
 import frc.robot.commands.shooter.HoodUpCommand;
 import frc.robot.commands.shooter.ManualHoodDown;
 import frc.robot.commands.shooter.PassFuelCommand;
-import frc.robot.commands.turret.ManualTurretCCWCommand;
-import frc.robot.commands.turret.ManualTurretCWCommand;
 import frc.robot.extras.util.JoystickUtil;
 import frc.robot.subsystems.adjustableHood.AdjustableHoodSubsystem;
 import frc.robot.subsystems.adjustableHood.PhysicalAdjustableHood;
@@ -216,12 +214,11 @@ public class Robot extends LoggedRobot {
         .whileTrue(
             new PassFuelCommand(
                 swerveDrive,
-                turretSubsystem,
                 shooterSubsystem,
                 hoodSubsystem,
                 () -> operatorController.povDown().getAsBoolean()));
     driverController.y().whileTrue(new HoodUpCommand(hoodSubsystem));
-    driverController.a().whileTrue(new DefenseCommand(intakeSubsystem, turretSubsystem));
+    driverController.a().whileTrue(new DefenseCommand(intakeSubsystem));
     // driverController.b().whileTrue(new ReverseSpindexerCommand(shooterSubsystem));
     driverController.leftTrigger().whileTrue(new ReverseKickerAndRollers(shooterSubsystem));
 
@@ -236,7 +233,6 @@ public class Robot extends LoggedRobot {
         .whileTrue(
             new ShootWhileMove(
                 swerveDrive,
-                turretSubsystem,
                 shooterSubsystem,
                 hoodSubsystem,
                 () -> operatorController.povDown().getAsBoolean(),
@@ -262,11 +258,7 @@ public class Robot extends LoggedRobot {
 
     operatorController.povDown().whileTrue(new ManualHoodDown(hoodSubsystem));
 
-    operatorController.leftBumper().whileTrue(new ManualTurretCCWCommand(turretSubsystem));
-    operatorController.rightBumper().whileTrue(new ManualTurretCWCommand(turretSubsystem));
-
     operatorController.povLeft().onTrue(new InstantCommand(() -> hoodSubsystem.rezeroHood()));
-    operatorController.povRight().onTrue(new InstantCommand(() -> turretSubsystem.rezeroTurret()));
   }
 
   /** Checks the git status and records it to the log */
@@ -345,7 +337,6 @@ public class Robot extends LoggedRobot {
                 new PhysicalModule(SwerveConstants.compModuleConfigs[3]));
         this.visionSubsystem = new VisionSubsystem(new PhysicalVision() {}); // PhysicalVision
         this.shooterSubsystem = new ShooterSubsystem(new PhysicalShooter());
-        this.turretSubsystem = new TurretSubsystem(new PhysicalTurret());
         this.hoodSubsystem = new AdjustableHoodSubsystem(new PhysicalAdjustableHood());
         this.intakeSubsystem = new IntakeSubsystem(new PhysicalIntake());
       }
@@ -420,7 +411,6 @@ public class Robot extends LoggedRobot {
             this.swerveDrive,
             this.visionSubsystem,
             this.shooterSubsystem,
-            this.turretSubsystem,
             this.hoodSubsystem,
             this.intakeSubsystem);
   }
