@@ -14,7 +14,8 @@ public class DefenseCommand extends Command {
 
   /** Creates a new DefenseCommand. */
   public DefenseCommand(IntakeSubsystem intakeSubsystem) {
-    this.intakeSubsystem = intakeSubsystem;  }
+    this.intakeSubsystem = intakeSubsystem;
+  }
 
   // Called when the command is initially scheduled.
   @Override

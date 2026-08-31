@@ -69,10 +69,7 @@ public class ShootWhileMove extends Command {
   }
 
   // Still lets you make a "normal" one for if you never want to override e.g. autos
-  public ShootWhileMove(
-      SwerveDrive drive,
-      ShooterSubsystem shooter,
-      AdjustableHoodSubsystem hood) {
+  public ShootWhileMove(SwerveDrive drive, ShooterSubsystem shooter, AdjustableHoodSubsystem hood) {
     this(drive, shooter, hood, () -> false, () -> false);
   }
 
@@ -131,7 +128,6 @@ public class ShootWhileMove extends Command {
     double desiredHeading = turretAngleRad / (2.0 * Math.PI);
 
     desiredHeading -= 0.25; // .25 is because we zero it facing left instead of forward
-
 
     SmartDashboard.putBoolean("aiming properly", isAimingProperly);
 

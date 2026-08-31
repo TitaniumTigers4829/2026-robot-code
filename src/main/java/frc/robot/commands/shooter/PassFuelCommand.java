@@ -55,7 +55,8 @@ public class PassFuelCommand extends Command {
           });
 
   public PassFuelCommand(
-      SwerveDrive drive,      ShooterSubsystem shooter,
+      SwerveDrive drive,
+      ShooterSubsystem shooter,
       AdjustableHoodSubsystem hood,
       BooleanSupplier overridingHood) {
     this.drive = drive;
@@ -81,7 +82,7 @@ public class PassFuelCommand extends Command {
     dampener = -1;
 
     robotPose = drive.getEstimatedPose();
-        fieldRelative =
+    fieldRelative =
         ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), robotPose.getRotation());
 
     velocityOmega = drive.getChassisSpeeds().omegaRadiansPerSecond;
@@ -119,6 +120,7 @@ public class PassFuelCommand extends Command {
 
     desiredHeading -= 0.25; // .25 is because we zero it facing left instead of forward
   }
+
   @Override
   public boolean isFinished() {
     return false;
