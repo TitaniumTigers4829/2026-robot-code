@@ -3,15 +3,15 @@ package frc.robot;
 /** Automatically generated file containing build version information. */
 public final class BuildConstants {
   public static final String MAVEN_GROUP = "";
-  public static final String MAVEN_NAME = "robot-code-2026";
+  public static final String MAVEN_NAME = "sabre-code-2026";
   public static final String VERSION = "unspecified";
-  public static final int GIT_REVISION = 169;
-  public static final String GIT_SHA = "e54e39b8a0f897d2a85ce7b08df44d70c0f64a97";
-  public static final String GIT_DATE = "2026-05-30 12:26:49 EDT";
-  public static final String GIT_BRANCH = "elon-plus-shoot-while-move";
-  public static final String BUILD_DATE = "2026-06-01 17:40:53 EDT";
-  public static final long BUILD_UNIX_TIME = 1780350053541L;
-  public static final int DIRTY = 1;
+  public static final int GIT_REVISION = 172;
+  public static final String GIT_SHA = "5c72f94a4a14b3205c491249f97bdb47503b51b5";
+  public static final String GIT_DATE = "2026-06-03 16:15:12 EDT";
+  public static final String GIT_BRANCH = "main";
+  public static final String BUILD_DATE = "2026-09-02 16:22:49 EDT";
+  public static final long BUILD_UNIX_TIME = 1788380569251L;
+  public static final int DIRTY = 0;
 
   private BuildConstants() {}
 }
